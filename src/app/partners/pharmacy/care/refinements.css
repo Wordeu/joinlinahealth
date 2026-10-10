@@ -1,0 +1,61 @@
+.care-page :is(a, button, input):focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+}
+
+/* The column header and every patient row read from one track definition, so
+   the labels always sit over the data they name. */
+.care-page .care-patient-list {
+  --patient-row-height: 84px;
+  --patient-cols: 26px minmax(0, 1fr);
+}
+
+.care-page .care-patient-grid {
+  display: grid;
+  grid-template-columns: var(--patient-cols);
+  column-gap: 12px;
+}
+
+.care-page .care-patient-row {
+  row-gap: 4px;
+  padding-block: 10px;
+}
+
+.care-patient-row > :first-child {
+  grid-row: 1 / 3;
+  align-self: start;
+}
+
+.care-patient-row > :last-child {
+  grid-column: 2;
+}
+
+@media (min-width: 640px) {
+  .care-page .care-patient-list {
+    --patient-row-height: 52px;
+    /* The status track holds the longest chip with room to spare, so nothing
+       ever spills over the divider into the panel. */
+    --patient-cols: 26px minmax(0, 1.4fr) minmax(0, 1fr) 164px;
+  }
+
+  .care-page .care-patient-row {
+    padding-block: 0;
+  }
+
+  .care-patient-row > :first-child {
+    grid-row: auto;
+    align-self: center;
+  }
+
+  .care-patient-row > :last-child {
+    grid-column: auto;
+  }
+}
+
+/* The detail column is as tall as the list beside it, so the quiet footer sits
+   on the bottom edge of the card rather than halfway up an empty panel. */
+.care-page .care-detail-pane > * {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}

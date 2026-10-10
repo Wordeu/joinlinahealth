@@ -1,0 +1,159 @@
+.supportCard {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #e2e6ea;
+  background: #fff;
+}
+
+/* Give tablet previews their own column instead of squeezing three cards. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .supportCard {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: 24px;
+  }
+
+  .supportCard > :not(:last-child) { grid-column: 1; }
+  .supportCard > p { margin-bottom: 0; }
+  .supportCard > :last-child {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    margin-top: 0;
+  }
+}
+
+.appGallery {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+  padding-top: 12px;
+  isolation: isolate;
+}
+
+.appPreview {
+  position: relative;
+  min-width: 0;
+  padding: 4px 0;
+  color: #55606b;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.thumbnail {
+  display: flex;
+  height: 140px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.thumbnailImage {
+  width: auto;
+  height: auto;
+  max-width: 76px;
+  max-height: 100%;
+  object-fit: contain;
+  transform-origin: center bottom;
+  transition: transform 320ms cubic-bezier(.22,.61,.36,1), filter 320ms ease;
+}
+
+.previewLabel {
+  display: block;
+  margin-top: 12px;
+  font-size: 10px;
+  line-height: 1.5;
+  transition: color 180ms ease;
+}
+
+.appPreview:focus-visible { z-index: 2; }
+.appPreview:focus-visible .thumbnailImage {
+  transform: translateY(-6px) scale(1.45);
+  filter: drop-shadow(0 10px 10px #0c11161a);
+}
+
+.touchHint { display: inline; }
+.hoverHint { display: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .touchHint { display: none; }
+  .hoverHint { display: inline; }
+  .appPreview:hover { z-index: 2; }
+  .appPreview:hover .thumbnailImage {
+    transform: translateY(-6px) scale(1.45);
+    filter: drop-shadow(0 10px 10px #0c11161a);
+  }
+  .appPreview:hover .previewLabel { color: #2563eb; }
+}
+
+.dialog {
+  position: fixed;
+  inset: 0;
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid #e2e6ea;
+  background: #fff;
+  color: #0c1116;
+  box-shadow: 0 24px 80px #0c111633;
+}
+
+.dialog::backdrop {
+  background: #0c111666;
+  backdrop-filter: blur(5px);
+}
+
+.dialog[open] { animation: preview-enter 200ms ease-out; }
+.dialogContent { padding: 20px; }
+.dialogHeader, .dialogFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dialogHeader { padding-bottom: 16px; border-bottom: 1px solid #e2e6ea; }
+.dialogFooter { padding-top: 16px; border-top: 1px solid #e2e6ea; }
+.galleryControl {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid #e2e6ea;
+  background: #fff;
+  color: #2563eb;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+.galleryControl:hover { background: #f1f5fe; border-color: #6e96f4; }
+.galleryControl:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+.expandedImage {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(560px, calc(100dvh - 240px));
+  margin: 20px auto;
+  object-fit: contain;
+}
+
+@keyframes preview-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 767px) {
+  .appGallery { gap: 8px; }
+  .thumbnail { height: 112px; }
+  .thumbnailImage { max-width: min(100%, 60px); }
+  .appPreview:first-child .thumbnailImage { transform-origin: left bottom; }
+  .appPreview:last-child .thumbnailImage { transform-origin: right bottom; }
+  .previewLabel { font-size: 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumbnailImage, .previewLabel, .galleryControl { transition: none; }
+  .dialog[open] { animation: none; }
+}
