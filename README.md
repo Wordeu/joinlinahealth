@@ -26,7 +26,11 @@ The page lives in `src/app/partners/pharmacy/page.tsx`; its demos and calculator
 
 ## Deployment
 
-Connect this repository to a separate Vercel project using the Next.js preset and Node.js 24. Use `main` as the production branch. Verify the Vercel preview before moving the custom domain from the original project.
+The separate Vercel project is `johnny-wordsworths-projects/joinlinahealth`, running at https://joinlinahealth.vercel.app. It uses the Next.js preset and Node.js 24. The custom domain has not yet been moved from the original project.
+
+Automatic deployments are not connected yet: Vercel could not access the new private GitHub repository. Authorise the Vercel GitHub app for `Wordeu/joinlinahealth`, then connect it under the Vercel project's Git settings with `main` as the production branch. Pull requests and pushes to `main` already run a GitHub Actions build check.
+
+Until the Git connection is enabled, an authorised Vercel user can deploy from a clean checkout with `vercel link --project joinlinahealth --scope johnny-wordsworths-projects` and `vercel deploy --prod`. Verify the separate deployment before moving the custom domain.
 
 The canonical URL is currently `https://joinlinahealth.com`. If a different public domain is chosen, update `SITE_URL` in the metadata and the displayed address in `social-card/route.tsx` together.
 
