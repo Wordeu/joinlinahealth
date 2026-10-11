@@ -114,8 +114,10 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim(), source: 'lina-care-waitlist' }),
+        signal: AbortSignal.timeout(15000),
       });
-      setStatus(response.ok ? 'success' : 'error');
+      const result = await response.json();
+      setStatus(response.ok && result.success === true ? 'success' : 'error');
     } catch {
       setStatus('error');
     }
@@ -162,6 +164,9 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
               <input
                 id="care-waitlist-email"
                 type="email"
+                name="email"
+                autoComplete="email"
+                maxLength={254}
                 required
                 autoFocus
                 value={email}
@@ -171,7 +176,7 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
                 style={{ borderColor: LINE, color: INK }}
               />
               {status === 'error' ? (
-                <p className="mt-2 text-[12px]" style={{ color: '#BA3A2E' }}>
+                <p role="alert" className="mt-2 text-[12px]" style={{ color: '#BA3A2E' }}>
                   That didn’t go through. Try again.
                 </p>
               ) : null}

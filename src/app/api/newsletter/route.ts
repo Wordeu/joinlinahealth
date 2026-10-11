@@ -21,7 +21,9 @@ export async function POST(request: NextRequest) {
       cache: 'no-store',
       signal: AbortSignal.timeout(10000),
     });
-    if (!response.ok) throw new Error('Signup service unavailable');
+    if (!response.ok || (await response.json()).success !== true) {
+      throw new Error('Signup service unavailable');
+    }
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: 'Could not save your email. Please try again.' }, { status: 502 });
